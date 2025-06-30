@@ -1,4 +1,4 @@
-import MainLayout from '@/components/layout/MainLayout';
+import MainLayout from '@/components/layouts/MainLayout';
 import AttendancePage from '@/pages/AttendancePage';
 import DashboardPage from '@/pages/DashboardPage';
 import EmployeesPage from '@/pages/Employees';
