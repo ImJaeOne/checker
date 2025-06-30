@@ -1,14 +1,13 @@
 import { Link } from 'react-router-dom';
+import LoginForm from '@/components/login/LoginForm';
 
 const LoginPage = () => {
   return (
-    <>
-      <div>LoginPage</div>
-      <div className="flex flex-col">
-        <Link to="/register">회원 가입</Link>
-        <Link to="/dashboard">대시 보드</Link>
-      </div>
-    </>
+    <section>
+      <h2>로그인</h2>
+      <LoginForm />
+      <Link to="/register">회원 가입</Link>
+    </section>
   );
 };
 
