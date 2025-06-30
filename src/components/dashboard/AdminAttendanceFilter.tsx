@@ -9,7 +9,7 @@ import { DatePicker } from '@/components/ui/DatePicker';
 import Combobox from '@/components/ui/Combobox';
 import RadioOption from '@/components/ui/RadioOption';
 import { RadioGroup } from '@/components/ui/radio-group';
-import { Input } from '../ui/input';
+import { Input } from '@/components/ui/input';
 
 const FormSchema = z
   .object({
