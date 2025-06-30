@@ -3,15 +3,15 @@ import EmployeeDashboardSummary from '@/components/dashboard/EmployeeDashboardSu
 import { mockUsers, USER_ROLES } from '@/mocks/users';
 
 const DashboardPage = () => {
-  const [admin, employee] = mockUsers;
+  const [employee, admin] = mockUsers;
 
   if (admin.role === USER_ROLES.ADMIN) {
     return <AdminDashboardSummary />;
   }
 
-  if (admin.role === USER_ROLES.EMPLOYEE) {
-    return <EmployeeDashboardSummary />;
-  }
+  // if (employee.role === USER_ROLES.EMPLOYEE) {
+  //   return <EmployeeDashboardSummary />;
+  // }
 };
 
 export default DashboardPage;
