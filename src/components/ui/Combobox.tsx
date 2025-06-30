@@ -16,25 +16,27 @@ import {
 } from '@/components/ui/popover';
 import { useState } from 'react';
 
-// 추후 departments table에서 가져올 예정
-const departments = [
-  {
-    value: '개발팀',
-    label: '개발팀',
-  },
-  {
-    value: '디자인팀',
-    label: '디자인팀',
-  },
-  {
-    value: '기획팀',
-    label: '기획팀',
-  },
-];
+export type Option = {
+  value: string;
+  label: string;
+};
 
-const Combobox = () => {
+type ComboboxProps = {
+  options: Option[];
+  placeholder?: string;
+  emptyMessage?: string;
+  selectedValue?: string;
+  onSelect: (value: string) => void;
+};
+
+const Combobox = ({
+  options,
+  placeholder = '선택하세요.',
+  emptyMessage = '검색 결과가 없습니다.',
+  selectedValue = '',
+  onSelect,
+}: ComboboxProps) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('');
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -45,33 +47,34 @@ const Combobox = () => {
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {value
-            ? departments.find((department) => department.value === value)
-                ?.label
-            : '부서를 선택해주세요.'}
+          {selectedValue
+            ? options.find((option) => option.value === selectedValue)?.label
+            : placeholder}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="부서를 검색하세요." className="h-9" />
+          <CommandInput placeholder="검색..." className="h-9" />
           <CommandList>
-            <CommandEmpty>존재하지 않는 부서입니다.</CommandEmpty>
+            <CommandEmpty>{emptyMessage}</CommandEmpty>
             <CommandGroup>
-              {departments.map((department) => (
+              {options.map((option) => (
                 <CommandItem
-                  key={department.value}
-                  value={department.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? '' : currentValue);
+                  key={option.value}
+                  value={option.value}
+                  onSelect={() => {
+                    onSelect(option.value);
                     setOpen(false);
                   }}
                 >
-                  {department.label}
+                  {option.label}
                   <Check
                     className={cn(
                       'ml-auto',
-                      value === department.value ? 'opacity-100' : 'opacity-0',
+                      selectedValue === option.value
+                        ? 'opacity-100'
+                        : 'opacity-0',
                     )}
                   />
                 </CommandItem>
