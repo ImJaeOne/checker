@@ -3,7 +3,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -18,26 +17,7 @@ import Combobox from '@/components/ui/Combobox';
 import RadioOption from '@/components/ui/RadioOption';
 import { RadioGroup } from '@/components/ui/radio-group';
 import { Input } from '@/components/ui/input';
-
-const FormSchema = z
-  .object({
-    startDate: z.date().optional(),
-    endDate: z.date().optional(),
-    department: z.string().optional(),
-    name: z.string().optional(),
-    attendance: z.string().optional(),
-    leave: z.string().optional(),
-  })
-  .refine(
-    (data) =>
-      !data.startDate ||
-      !data.endDate ||
-      (data.startDate && data.endDate && data.endDate >= data.startDate),
-    {
-      message: '종료일은 시작일 이후여야 합니다.',
-      path: ['endDate'],
-    },
-  );
+import { attendanceFilterSchema } from '@/schemas/attendance.schema';
 
 const departmentOptions = [
   { value: '', label: '전체' },
@@ -60,8 +40,8 @@ const leaveOptions = [
 ];
 
 const AdminAttendanceFilter = () => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof attendanceFilterSchema>>({
+    resolver: zodResolver(attendanceFilterSchema),
     defaultValues: {
       startDate: undefined,
       endDate: undefined,
@@ -72,7 +52,7 @@ const AdminAttendanceFilter = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = (data: z.infer<typeof attendanceFilterSchema>) => {
     const payload = {
       startDate: data.startDate ?? '전체',
       endDate: data.endDate ?? '전체',
