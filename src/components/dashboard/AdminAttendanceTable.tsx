@@ -4,7 +4,7 @@ import AdminAttendanceList from '@/components/dashboard/AdminAttendanceList';
 const AdminAttendanceTable = () => {
   return (
     <section>
-      <h1>출퇴근 기록</h1>
+      <h2>출퇴근 기록</h2>
       <AdminAttendanceFilter />
       <AdminAttendanceList />
     </section>

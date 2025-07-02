@@ -1,6 +1,7 @@
 const AdminDashboardSummary = () => {
   return (
     <section className="w-full p-6 bg-white rounded-2xl shadow-md space-y-6">
+      <h2 className="sr-only">관리자 대시보드 요약 영역</h2>
       <div className="flex justify-between items-center">
         <ul className="flex gap-4 text-sm text-gray-700 font-medium">
           <li>
@@ -23,22 +24,22 @@ const AdminDashboardSummary = () => {
       </div>
 
       <div className="grid grid-cols-4 gap-4">
-        <article className="bg-gray-50 border rounded-xl p-4 text-center">
+        <div className="bg-gray-50 border rounded-xl p-4 text-center">
           <p className="text-sm text-gray-500">출근 등록 대상자</p>
           <p className="text-xl font-bold">100명</p>
-        </article>
-        <article className="bg-gray-50 border rounded-xl p-4 text-center">
+        </div>
+        <div className="bg-gray-50 border rounded-xl p-4 text-center">
           <p className="text-sm text-gray-500">출근 등록자</p>
           <p className="text-xl font-bold">97명</p>
-        </article>
-        <article className="bg-gray-50 border rounded-xl p-4 text-center">
+        </div>
+        <div className="bg-gray-50 border rounded-xl p-4 text-center">
           <p className="text-sm text-gray-500">금일 휴가</p>
           <p className="text-xl font-bold">3명</p>
-        </article>
-        <article className="bg-gray-50 border rounded-xl p-4 text-center">
+        </div>
+        <div className="bg-gray-50 border rounded-xl p-4 text-center">
           <p className="text-sm text-gray-500">익일 휴가</p>
           <p className="text-xl font-bold">1명</p>
-        </article>
+        </div>
       </div>
     </section>
   );

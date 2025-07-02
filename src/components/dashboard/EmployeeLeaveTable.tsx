@@ -24,7 +24,7 @@ const EmployeeLeaveTable = () => {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold mb-4">연차 사용 내역</h1>
+      <h2 className="text-xl font-semibold mb-4">연차 사용 내역</h2>
       <table className="w-full border-collapse border text-sm">
         <thead>
           <tr>
