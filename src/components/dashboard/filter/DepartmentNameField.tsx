@@ -20,15 +20,17 @@ const DepartmentNameField = () => {
   const form = useFormContext();
 
   return (
-    <fieldset>
-      <legend>부서/구성원</legend>
+    <fieldset className="flex-1">
+      <legend className="text-sm font-medium mb-2">부서/구성원</legend>
       <div className="flex gap-2">
         <FormField
           control={form.control}
           name="department"
           render={({ field, fieldState }) => (
-            <FormItem className="flex-1">
-              <FormLabel htmlFor="department">부서 선택</FormLabel>
+            <FormItem>
+              <FormLabel htmlFor="department" className="sr-only">
+                부서 선택
+              </FormLabel>
               <FormControl>
                 <Combobox
                   id="department"
@@ -48,8 +50,10 @@ const DepartmentNameField = () => {
           control={form.control}
           name="name"
           render={({ field, fieldState }) => (
-            <FormItem className="flex-1">
-              <FormLabel htmlFor="name">구성원 이름</FormLabel>
+            <FormItem>
+              <FormLabel htmlFor="name" className="sr-only">
+                구성원 이름
+              </FormLabel>
               <FormControl>
                 <Input id="name" placeholder="구성원 이름 입력" {...field} />
               </FormControl>

@@ -19,19 +19,20 @@ const AttendanceField = () => {
       name="attendance"
       render={({ field }) => (
         <FormItem className="flex-1">
-          <div>출퇴근 여부</div>
-          <FormControl>
-            <RadioGroup
-              aria-labelledby="attendance-label"
-              defaultValue={field.value}
-              onValueChange={field.onChange}
-              className="flex flex-wrap gap-2"
-            >
-              {attendanceOptions.map((option) => (
-                <RadioOption key={option.id} {...option} />
-              ))}
-            </RadioGroup>
-          </FormControl>
+          <fieldset>
+            <legend>출퇴근 여부</legend>
+            <FormControl>
+              <RadioGroup
+                defaultValue={field.value}
+                onValueChange={field.onChange}
+                className="flex flex-wrap gap-2"
+              >
+                {attendanceOptions.map((option) => (
+                  <RadioOption key={option.id} {...option} />
+                ))}
+              </RadioGroup>
+            </FormControl>
+          </fieldset>
           <FormMessage />
         </FormItem>
       )}

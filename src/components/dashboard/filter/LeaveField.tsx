@@ -20,18 +20,20 @@ const LeaveField = () => {
       name="leave"
       render={({ field }) => (
         <FormItem className="flex-1">
-          <div>휴가 사용 여부</div>
-          <FormControl>
-            <RadioGroup
-              defaultValue={field.value}
-              onValueChange={field.onChange}
-              className="flex flex-wrap gap-2"
-            >
-              {leaveOptions.map((option) => (
-                <RadioOption key={option.id} {...option} />
-              ))}
-            </RadioGroup>
-          </FormControl>
+          <fieldset>
+            <legend>휴가 사용 여부</legend>
+            <FormControl>
+              <RadioGroup
+                defaultValue={field.value}
+                onValueChange={field.onChange}
+                className="flex flex-wrap gap-2"
+              >
+                {leaveOptions.map((option) => (
+                  <RadioOption key={option.id} {...option} />
+                ))}
+              </RadioGroup>
+            </FormControl>
+          </fieldset>
           <FormMessage />
         </FormItem>
       )}
