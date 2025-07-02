@@ -20,18 +20,26 @@ import {
 } from '@/components/ui/select';
 import type { UserSignUpDTO } from '@/types/DTO/user.dto';
 import { signUpSchema } from '@/schemas/auth.shema';
+import { signUp } from '@/apis/auth.api';
+import { formatPhoneNumber } from '@/utils/formatNumber.util';
+import { useGetDepartmentsQuery } from '@/hooks/useDepartmentsQuery';
+import { useGetPositionsQuery } from '@/hooks/usePositionsQuery';
+import { useNavigate } from 'react-router-dom';
 
 const signUpDefaultValue: UserSignUpDTO = {
   email: '',
   password: '',
   name: '',
-  department_id: 1,
   phone: '',
-  position: '',
+  department_id: 1,
+  position_id: 2,
 };
 
 const RegisterForm = () => {
   const [isPending, setIsPending] = useState<boolean>(false);
+  const { data: departments } = useGetDepartmentsQuery();
+  const { data: positions } = useGetPositionsQuery();
+  const navigate = useNavigate();
 
   const form = useForm<UserSignUpDTO>({
     mode: 'onBlur',
@@ -39,13 +47,26 @@ const RegisterForm = () => {
     defaultValues: signUpDefaultValue,
   });
 
-  const isFormInvalid = Object.values(form.getValues()).some((value) => !value);
+  const watchedValues = form.watch();
+  const isFormInvalid = Object.values(watchedValues).some((value) => !value);
 
-  const onSubmit = (data: UserSignUpDTO) => {
+  const onSubmit = async (data: UserSignUpDTO): Promise<void> => {
     setIsPending(true);
-    // TODO 회원가입 처리
-    console.log(data);
-    setIsPending(false);
+    try {
+      const { error } = await signUp(data);
+      if (error) {
+        console.log(error);
+        alert(error);
+        return;
+      }
+      alert('회원가입이 완료되었습니다.');
+      navigate('/login');
+    } catch (error) {
+      alert('알 수 없는 오류가 발생했습니다.');
+      console.error(error);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
@@ -109,6 +130,11 @@ const RegisterForm = () => {
                   type="tel"
                   placeholder="전화번호를 입력해 주세요"
                   {...field}
+                  onChange={(e) => {
+                    const value = formatPhoneNumber(e.target.value);
+                    field.onChange(value);
+                  }}
+                  maxLength={13} // 010-1234-5678
                 />
               </FormControl>
               <FormMessage />
@@ -131,10 +157,14 @@ const RegisterForm = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="1">개발팀</SelectItem>
-                  <SelectItem value="2">디자인팀</SelectItem>
-                  <SelectItem value="3">기획팀</SelectItem>
-                  <SelectItem value="4">QA팀</SelectItem>
+                  {departments?.map((department) => (
+                    <SelectItem
+                      key={department.id}
+                      value={String(department.id)}
+                    >
+                      {department.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -143,25 +173,25 @@ const RegisterForm = () => {
         />
         <FormField
           control={form.control}
-          name="position"
+          name="position_id"
           render={({ field }) => (
             <FormItem>
               <FormLabel>직급</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={(val) => field.onChange(Number(val))}
+                defaultValue={String(field.value)}
+              >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="직급을 선택해 주세요" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="임원">임원</SelectItem>
-                  <SelectItem value="부장">부장</SelectItem>
-                  <SelectItem value="차장">차장</SelectItem>
-                  <SelectItem value="과장">과장</SelectItem>
-                  <SelectItem value="대리">대리</SelectItem>
-                  <SelectItem value="주임">주임</SelectItem>
-                  <SelectItem value="사원">사원</SelectItem>
-                  <SelectItem value="인턴">인턴</SelectItem>
+                  {positions?.map((position) => (
+                    <SelectItem key={position.id} value={String(position.id)}>
+                      {position.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <FormMessage />
