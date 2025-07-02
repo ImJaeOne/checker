@@ -12,8 +12,8 @@ const AdminAttendanceFilter = () => {
   const form = useForm<z.infer<typeof attendanceFilterSchema>>({
     resolver: zodResolver(attendanceFilterSchema),
     defaultValues: {
-      startDate: undefined,
-      endDate: undefined,
+      startDate: new Date(),
+      endDate: new Date(),
       department: '',
       name: '',
       attendance: 'normal',

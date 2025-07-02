@@ -12,16 +12,20 @@ const DateRangeField = () => {
   const form = useFormContext();
 
   return (
-    <div className="flex-1">
-      <FormLabel>기간</FormLabel>
+    <fieldset className="flex-1">
+      <legend>기간</legend>
       <div className="flex items-center gap-2">
         <FormField
           control={form.control}
           name="startDate"
           render={({ field, fieldState }) => (
             <FormItem>
+              <FormLabel htmlFor="startDate" className="sr-only">
+                시작일
+              </FormLabel>
               <FormControl>
                 <DatePicker
+                  id="startDate"
                   label="시작일"
                   value={field.value}
                   onChange={field.onChange}
@@ -32,14 +36,18 @@ const DateRangeField = () => {
             </FormItem>
           )}
         />
-        <span>~</span>
+
         <FormField
           control={form.control}
           name="endDate"
           render={({ field, fieldState }) => (
             <FormItem>
+              <FormLabel htmlFor="endDate" className="sr-only">
+                종료일
+              </FormLabel>
               <FormControl>
                 <DatePicker
+                  id="endDate"
                   label="종료일"
                   value={field.value}
                   onChange={field.onChange}
@@ -51,7 +59,7 @@ const DateRangeField = () => {
           )}
         />
       </div>
-    </div>
+    </fieldset>
   );
 };
 

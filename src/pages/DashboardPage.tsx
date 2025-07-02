@@ -7,14 +7,14 @@ import { mockUsers, USER_ROLES } from '@/mocks/users';
 const DashboardPage = () => {
   const [employee, admin] = mockUsers;
 
-  // if (admin.role === USER_ROLES.ADMIN) {
-  //   return (
-  //     <>
-  //       <AdminDashboardSummary />
-  //       <AdminAttendanceTable />
-  //     </>
-  //   );
-  // }
+  if (admin.role === USER_ROLES.ADMIN) {
+    return (
+      <>
+        <AdminDashboardSummary />
+        <AdminAttendanceTable />
+      </>
+    );
+  }
 
   if (employee.role === USER_ROLES.EMPLOYEE) {
     return (

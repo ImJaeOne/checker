@@ -22,6 +22,7 @@ export type Option = {
 };
 
 type ComboboxProps = {
+  id: string;
   options: Option[];
   placeholder?: string;
   emptyMessage?: string;
@@ -30,6 +31,7 @@ type ComboboxProps = {
 };
 
 const Combobox = ({
+  id,
   options,
   placeholder = '선택하세요.',
   emptyMessage = '검색 결과가 없습니다.',
@@ -42,6 +44,7 @@ const Combobox = ({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
+          id={id}
           variant="outline"
           role="combobox"
           aria-expanded={open}

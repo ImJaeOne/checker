@@ -1,7 +1,6 @@
 import {
   FormField,
   FormItem,
-  FormLabel,
   FormControl,
   FormMessage,
 } from '@/components/ui/form';
@@ -20,9 +19,10 @@ const AttendanceField = () => {
       name="attendance"
       render={({ field }) => (
         <FormItem className="flex-1">
-          <FormLabel>출퇴근 여부</FormLabel>
+          <div>출퇴근 여부</div>
           <FormControl>
             <RadioGroup
+              aria-labelledby="attendance-label"
               defaultValue={field.value}
               onValueChange={field.onChange}
               className="flex flex-wrap gap-2"

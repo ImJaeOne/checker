@@ -1,7 +1,6 @@
 import {
   FormField,
   FormItem,
-  FormLabel,
   FormControl,
   FormMessage,
 } from '@/components/ui/form';
@@ -21,7 +20,7 @@ const LeaveField = () => {
       name="leave"
       render={({ field }) => (
         <FormItem className="flex-1">
-          <FormLabel>휴가 사용 여부</FormLabel>
+          <div>휴가 사용 여부</div>
           <FormControl>
             <RadioGroup
               defaultValue={field.value}
