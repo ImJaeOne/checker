@@ -7,8 +7,10 @@ export const signUpSchema = z.object({
     .min(6, { message: '비밀번호는 최소 6자 이상이어야 합니다' }),
   name: z.string().min(1, { message: '이름을 입력해 주세요' }),
   department_id: z.number(),
-  phone: z.string().min(10, { message: '전화번호를 입력해 주세요' }),
-  position: z.string().min(1, { message: '직급을 선택해 주세요' }),
+  phone: z.string().regex(/^01[016789]-\d{3,4}-\d{4}$/, {
+    message: '올바른 휴대전화 번호 형식이 아닙니다',
+  }),
+  position_id: z.number().min(1, { message: '직급을 선택해 주세요' }),
 });
 
 export const signInSchema = z.object({
