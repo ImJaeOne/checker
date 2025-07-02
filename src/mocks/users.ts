@@ -13,11 +13,10 @@ export const USER_STATUS = {
 
 type UserStatus = (typeof USER_STATUS)[keyof typeof USER_STATUS];
 
-type User = {
+export type UserDTO = {
   id: number;
-  email: string | null;
-  password: string | null;
-  name: string | null;
+  email: string;
+  name: string;
   phone: string | null;
   employee_number: string | null;
   department_id: number | null;
@@ -31,12 +30,19 @@ type User = {
   updated_at: string;
 };
 
+// signup은 임시
+export type UserSignUpDTO = Pick<
+  UserDTO,
+  'email' | 'name' | 'department_id' | 'phone'
+>;
+
+export type UserSignInDTO = Pick<UserDTO, 'email'> & { password: string };
+
 // [1] admin-active [2] employee-inactive
-export const mockUsers: User[] = [
+export const mockUsers: UserDTO[] = [
   {
     id: 1,
     email: 'hong.gildong@example.com',
-    password: 'hashed-password-1',
     name: '홍길동',
     phone: '010-1234-5678',
     employee_number: 'EMP001',
@@ -53,7 +59,6 @@ export const mockUsers: User[] = [
   {
     id: 2,
     email: 'kim.chulsu@example.com',
-    password: 'hashed-password-2',
     name: '김철수',
     phone: '010-2345-6789',
     employee_number: 'EMP002',

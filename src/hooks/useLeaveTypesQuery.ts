@@ -1,4 +1,4 @@
-import { getLeaveTypes } from '@/apis/leaveTypes.api';
+import { getLeaveTypes } from '@/apis/leaveType.api';
 import { QUERY_KEY } from '@/constants/queryKey.constant';
 import { useQuery } from '@tanstack/react-query';
 

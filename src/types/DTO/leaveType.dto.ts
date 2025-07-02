@@ -1,4 +1,4 @@
-export type LeaveTypesDTO = {
+export type LeaveTypeDTO = {
   id: number;
   name: string;
   code: string;
