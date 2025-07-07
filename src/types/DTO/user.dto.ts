@@ -14,14 +14,14 @@ export const USER_STATUS = {
 type UserStatus = (typeof USER_STATUS)[keyof typeof USER_STATUS];
 
 export type UserDTO = {
-  id: number;
+  id: string;
   email: string;
   name: string;
   phone: string;
   department_id: number;
   position_id: number;
   role: UserRole;
-  hire_date: string | null;
+  hire_date: Date | null;
   work_start_time: string;
   work_end_time: string;
   status: UserStatus;
