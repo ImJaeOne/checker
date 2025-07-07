@@ -21,7 +21,7 @@ export type UserDTO = {
   department_id: number;
   position_id: number;
   role: UserRole;
-  hire_date: string | null;
+  hire_date: Date | null;
   work_start_time: string;
   work_end_time: string;
   status: UserStatus;
