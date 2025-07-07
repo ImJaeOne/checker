@@ -6,3 +6,5 @@ export type LeaveTypeDTO = {
   max_days_per_year: number | null;
   description: string;
 };
+
+export type LeaveTypesDTO = LeaveTypeDTO[];
