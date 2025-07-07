@@ -25,6 +25,7 @@ import { formatPhoneNumber } from '@/utils/formatNumber.util';
 import { useGetDepartmentsQuery } from '@/hooks/useDepartmentsQuery';
 import { useGetPositionsQuery } from '@/hooks/usePositionsQuery';
 import { useNavigate } from 'react-router-dom';
+import SITE_MAP from '@/constants/siteMap.constant';
 
 const signUpDefaultValue: UserSignUpDTO = {
   email: '',
@@ -60,7 +61,7 @@ const RegisterForm = () => {
         return;
       }
       alert('회원가입이 완료되었습니다.');
-      navigate('/login');
+      navigate(SITE_MAP.LOGIN);
     } catch (error) {
       alert('알 수 없는 오류가 발생했습니다.');
       console.error(error);
