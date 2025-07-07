@@ -6,6 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import type { UserSignInDTO } from '@/types/DTO/user.dto';
 import { signInSchema } from '@/schemas/auth.shema';
+import { signIn } from '@/apis/auth.api';
+import { useNavigate } from 'react-router-dom';
+import SITE_MAP from '@/constants/siteMap.constant';
 
 const signInDefaultValue: UserSignInDTO = {
   email: '',
@@ -13,6 +16,7 @@ const signInDefaultValue: UserSignInDTO = {
 };
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [isPending, setIsPending] = useState<boolean>(false);
 
   const form = useForm<UserSignInDTO>({
@@ -21,13 +25,25 @@ const LoginForm = () => {
     defaultValues: signInDefaultValue,
   });
 
-  const isFormInvalid = !form.getValues('email') || !form.getValues('password');
+  const watchedValues = form.watch();
+  const isFormInvalid = Object.values(watchedValues).some((value) => !value);
 
-  const onSubmit = (data: UserSignInDTO) => {
+  const onSubmit = async (data: UserSignInDTO) => {
     setIsPending(true);
-    // TODO 로그인 함수 처리
-    console.log('data', data);
-    setIsPending(false);
+    try {
+      const { error } = await signIn(data);
+      if (error) {
+        alert(error);
+        return;
+      }
+      alert('로그인이 완료되었습니다.');
+      navigate(SITE_MAP.HOME);
+    } catch (error) {
+      alert('에러 발생');
+      console.error(error);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
