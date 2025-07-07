@@ -14,7 +14,7 @@ export const USER_STATUS = {
 type UserStatus = (typeof USER_STATUS)[keyof typeof USER_STATUS];
 
 export type UserDTO = {
-  id: number;
+  id: string;
   email: string;
   name: string;
   phone: string;
