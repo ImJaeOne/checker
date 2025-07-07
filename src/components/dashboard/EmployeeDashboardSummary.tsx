@@ -13,8 +13,14 @@ const EmployeeDashboardSummary = ({ user }: EmployeeDashboardSummaryProps) => {
       <div className="bg-gray-50 border rounded-xl p-4 text-center">
         <p className="text-sm text-gray-500 mb-2">내 근무기간</p>
         <p className="text-xl font-bold">
-          {format(user.hire_date!, 'yyyy.MM.dd')} ~
-          {format(new Date(), 'yyyy.MM.dd')}
+          {user.hire_date ? (
+            <>
+              {format(user.hire_date, 'yyyy.MM.dd')} ~
+              {format(new Date(), 'yyyy.MM.dd')}
+            </>
+          ) : (
+            <span className="text-gray-400">입사일 정보 없음</span>
+          )}
         </p>
       </div>
 
