@@ -19,7 +19,7 @@ export type UserDTO = {
   name: string;
   phone: string;
   department_id: number;
-  position: string;
+  position_id: number;
   role: UserRole;
   hire_date: string | null;
   work_start_time: string;
@@ -31,7 +31,9 @@ export type UserDTO = {
 
 export type UserSignUpDTO = Pick<
   UserDTO,
-  'email' | 'name' | 'department_id' | 'phone' | 'position'
+  'email' | 'name' | 'department_id' | 'phone' | 'position_id'
 > & { password: string };
 
 export type UserSignInDTO = Pick<UserDTO, 'email'> & { password: string };
+
+export type UserId = UserDTO['id'];

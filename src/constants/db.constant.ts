@@ -6,4 +6,5 @@ export const DB = {
   ATTENDANCES: 'attendances',
   APPROVAL_HISTORIES: 'approval_histories',
   ANNUAL_LEAVE_BALANCES: 'annual_leave_balances',
+  POSITIONS: 'positions',
 };
