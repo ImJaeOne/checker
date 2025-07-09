@@ -19,6 +19,7 @@ import {
 import { ChevronUp } from 'lucide-react';
 import { supabase } from '@/utils/supabase';
 import { useNavigate } from 'react-router-dom';
+import { useUserStore } from '@/store/user.store';
 
 const NavItems = [
   {
@@ -40,6 +41,7 @@ const NavItems = [
 ];
 
 const AppSidebar = () => {
+  const user = useUserStore((state) => state.user);
   const navigate = useNavigate();
 
   const onSignOut = async () => {
@@ -56,6 +58,7 @@ const AppSidebar = () => {
       console.error(error);
     }
   };
+
   return (
     <Sidebar>
       <SidebarHeader className="text-2xl font-bold">Checker</SidebarHeader>
@@ -82,7 +85,7 @@ const AppSidebar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  이름입니다~
+                  <p>{user.name}</p>
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -90,8 +93,8 @@ const AppSidebar = () => {
                 side="top"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <DropdownMenuItem>
-                  <span onClick={onSignOut}>로그아웃</span>
+                <DropdownMenuItem onClick={onSignOut}>
+                  <span>로그아웃</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -1,9 +1,8 @@
-import type { PositionDTO } from '@/types/DTO/positions.dto';
-import type { UserDTO } from '@/types/DTO/user.dto';
+import type { UserWithPositionDTO } from '@/types/DTO/user.dto';
 import { format } from 'date-fns';
 
 type EmployeeDashboardSummaryProps = {
-  user: UserDTO & { positions: PositionDTO };
+  user: UserWithPositionDTO;
 };
 
 const EmployeeDashboardSummary = ({ user }: EmployeeDashboardSummaryProps) => {
