@@ -2,7 +2,6 @@ import MainLayout from '@/components/layouts/MainLayout';
 import AttendancePage from '@/pages/AttendancePage';
 import DashboardPage from '@/pages/DashboardPage';
 import EmployeesPage from '@/pages/Employees';
-import LeavePage from '@/pages/LeavePage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 import {
@@ -12,6 +11,8 @@ import {
 } from 'react-router-dom';
 import ProtectedRoute from '@/routes/ProtectedRoute';
 import SITE_MAP from '@/constants/siteMap.constant';
+import LeaveRequestPage from '@/pages/LeaveRequestPage';
+import LeaveApprovalPage from '@/pages/LeaveApprovalPage';
 
 const router = createBrowserRouter([
   {
@@ -46,10 +47,18 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: SITE_MAP.LEAVE,
+        path: SITE_MAP.LEAVE_REQUEST,
         element: (
           <ProtectedRoute roles={['admin', 'employee']}>
-            <LeavePage />
+            <LeaveRequestPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: SITE_MAP.LEAVE_APPROVAL,
+        element: (
+          <ProtectedRoute roles={['admin']}>
+            <LeaveApprovalPage />
           </ProtectedRoute>
         ),
       },
