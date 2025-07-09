@@ -11,26 +11,26 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import ProtectedRoute from '@/routes/ProtectedRoute';
+import SITE_MAP from '@/constants/siteMap.constant';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navigate to="/login" replace />,
+    element: <Navigate to={SITE_MAP.LOGIN} replace />,
   },
   {
-    path: '/login',
+    path: SITE_MAP.LOGIN,
     element: <LoginPage />,
   },
   {
-    path: '/register',
+    path: SITE_MAP.REGISTER,
     element: <RegisterPage />,
   },
   {
-    path: '/',
     element: <MainLayout />,
     children: [
       {
-        path: 'dashboard',
+        path: SITE_MAP.DASHBOARD,
         element: (
           <ProtectedRoute roles={['admin', 'employee']}>
             <DashboardPage />
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'attendance',
+        path: SITE_MAP.ATTENDANCE,
         element: (
           <ProtectedRoute roles={['employee']}>
             <AttendancePage />
@@ -46,15 +46,15 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'leave',
+        path: SITE_MAP.LEAVE,
         element: (
-          <ProtectedRoute roles={['employee']}>
+          <ProtectedRoute roles={['admin', 'employee']}>
             <LeavePage />
           </ProtectedRoute>
         ),
       },
       {
-        path: 'employees',
+        path: SITE_MAP.EMPLOYEES,
         element: (
           <ProtectedRoute roles={['admin']}>
             <EmployeesPage />
