@@ -5,8 +5,8 @@ const SITE_MAP = {
   DASHBOARD: '/dashboard',
   EMPLOYEES: '/employees',
   ATTENDANCE: '/attendance',
-  LEAVE_REQUEST: 'leave-request',
-  LEAVE_APPROVAL: 'leave-approval',
+  LEAVE_REQUEST: '/leave-request',
+  LEAVE_APPROVAL: '/leave-approval',
 };
 
 export default SITE_MAP;
