@@ -1,6 +1,8 @@
-import { mockUsers, type UserRole } from '@/mocks/users';
 import type { JSX } from 'react';
 import { Navigate } from 'react-router-dom';
+import SITE_MAP from '@/constants/siteMap.constant';
+import { useUserStore } from '@/store/user.store';
+import type { UserRole } from '@/types/DTO/user.dto';
 
 type ProtectedRouteProps = {
   children: JSX.Element;
@@ -8,14 +10,12 @@ type ProtectedRouteProps = {
 };
 
 const ProtectedRoute = ({ children, roles }: ProtectedRouteProps) => {
-  // 추후엔 useAuth로 user 정보 가져오기
-  // zustand로 유저 정보 관리
-  const [admin, employee] = mockUsers;
+  const user = useUserStore((state) => state.user);
 
-  if (!admin) {
-    return <Navigate to="login" replace />;
+  if (!user.id) {
+    return <Navigate to={SITE_MAP.LOGIN} replace />;
   }
-  if (!roles.includes(admin.role)) {
+  if (!roles.includes(user.role)) {
     return <div>접근 권한 없음</div>;
   }
 
