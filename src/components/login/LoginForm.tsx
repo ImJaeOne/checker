@@ -37,7 +37,7 @@ const LoginForm = () => {
         return;
       }
       alert('로그인이 완료되었습니다.');
-      navigate(SITE_MAP.HOME);
+      navigate(SITE_MAP.DASHBOARD);
     } catch (error) {
       alert('에러 발생');
       console.error(error);
