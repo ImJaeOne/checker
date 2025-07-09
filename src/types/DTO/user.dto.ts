@@ -1,3 +1,5 @@
+import type { PositionDTO } from '@/types/DTO/positions.dto';
+
 export const USER_ROLES = {
   ADMIN: 'admin',
   EMPLOYEE: 'employee',
@@ -37,3 +39,5 @@ export type UserSignUpDTO = Pick<
 export type UserSignInDTO = Pick<UserDTO, 'email'> & { password: string };
 
 export type UserId = UserDTO['id'];
+
+export type UserWithPositionDTO = UserDTO & { positions: PositionDTO };
