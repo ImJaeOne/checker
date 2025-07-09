@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 const queryClient = new QueryClient();
 
-function App() {
+const App = () => {
   useEffect(() => {
     initializeAuthListener();
   }, []);
@@ -15,6 +15,6 @@ function App() {
       <Router />
     </QueryClientProvider>
   );
-}
+};
 
 export default App;
