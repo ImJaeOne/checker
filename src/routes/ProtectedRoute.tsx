@@ -12,7 +12,7 @@ type ProtectedRouteProps = {
 const ProtectedRoute = ({ children, roles }: ProtectedRouteProps) => {
   const user = useUserStore((state) => state.user);
 
-  if (!user) {
+  if (!user.id) {
     return <Navigate to={SITE_MAP.LOGIN} replace />;
   }
   if (!roles.includes(user.role)) {
