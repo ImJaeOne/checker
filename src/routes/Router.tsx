@@ -41,7 +41,7 @@ const router = createBrowserRouter([
       {
         path: SITE_MAP.ATTENDANCE,
         element: (
-          <ProtectedRoute roles={['employee']}>
+          <ProtectedRoute roles={['admin']}>
             <AttendancePage />
           </ProtectedRoute>
         ),
