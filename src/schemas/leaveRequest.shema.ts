@@ -1,4 +1,4 @@
-import { HALF_DAY_TYPES } from '@/constants/leaveRequests.constant';
+import { HALF_DAY_TYPES } from '@/constants/leave.constant';
 import z from 'zod';
 
 export const leaveRequestSchema = z

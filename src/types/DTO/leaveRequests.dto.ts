@@ -1,7 +1,7 @@
 import type {
   HALF_DAY_TYPES,
   LEAVE_STATUSES,
-} from '@/constants/leaveRequests.constant';
+} from '@/constants/leave.constant';
 
 export type LeaveRequestDTO = {
   id: number;
