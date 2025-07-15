@@ -6,6 +6,7 @@ import { getUser } from '@/apis/user.api';
 
 type UserStore = {
   user: UserWithPositionDTO;
+  isAuthReady: boolean;
   setUser: (user: UserWithPositionDTO) => void;
   resetUser: () => void;
 };
@@ -36,6 +37,7 @@ export const useUserStore = create<UserStore>()(
     persist(
       (set) => ({
         user: initialUser,
+        isAuthReady: false,
         setUser: (user: UserWithPositionDTO) => set({ user }),
         resetUser: () => set({ user: initialUser }),
       }),
@@ -48,19 +50,38 @@ export const useUserStore = create<UserStore>()(
   ),
 );
 
-export const initializeAuthListener = () => {
+export const initializeAuthListener = async () => {
+  const { setUser, resetUser } = useUserStore.getState();
+
+  try {
+    const { data: sessionData } = await supabase.auth.getSession();
+    const session = sessionData.session;
+
+    if (session) {
+      const user = await getUser(session.user.id);
+      if (user) {
+        setUser(user);
+      }
+    } else {
+      resetUser();
+    }
+  } catch (err) {
+    console.error('초기 세션 확인 실패:', err);
+    resetUser();
+  }
+
   supabase.auth.onAuthStateChange(async (_, session) => {
     if (session) {
       try {
         const user = await getUser(session.user.id);
         if (user) {
-          useUserStore.getState().setUser(user);
+          setUser(user);
         }
       } catch (error) {
-        console.error('Failed to fetch user data:', error);
+        console.error('세션 변경 후 유저 정보 가져오기 실패:', error);
       }
     } else {
-      useUserStore.getState().resetUser();
+      resetUser();
     }
   });
 };
