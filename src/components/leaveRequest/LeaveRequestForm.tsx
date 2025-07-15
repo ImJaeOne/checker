@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import { ChevronDownIcon } from 'lucide-react';
-import { addLeaveRequests } from '@/apis/leaveRequests.api';
+
 import { leaveRequestSchema } from '@/schemas/leaveRequest.shema';
 import type {
   LeaveRequestDTO,
@@ -38,6 +38,7 @@ import {
 } from '@/constants/leaveRequests.constant';
 import { useNavigate } from 'react-router-dom';
 import SITE_MAP from '@/constants/siteMap.constant';
+import { postLeaveRequests } from '@/apis/leaveRequests.api';
 
 const leaveRequestDefaultValue: LeaveRequestFormValue = {
   leave_type_id: 1,
@@ -77,7 +78,7 @@ const LeaveRequestForm = () => {
         data.start_date,
         data.end_date,
       );
-      await addLeaveRequests({ ...data, total_days } as LeaveRequestDTO);
+      await postLeaveRequests({ ...data, total_days } as LeaveRequestDTO);
       alert('연차 신청 완료');
       navigate(SITE_MAP.DASHBOARD);
     } catch (error) {
