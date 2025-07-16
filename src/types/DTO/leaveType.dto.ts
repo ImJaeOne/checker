@@ -1,3 +1,5 @@
+import type { LEAVE_TYPE_ID } from '@/constants/leave.constant';
+
 export type LeaveTypeDTO = {
   id: number;
   name: string;
@@ -8,3 +10,5 @@ export type LeaveTypeDTO = {
 };
 
 export type LeaveTypesDTO = LeaveTypeDTO[];
+
+export type LeaveType = keyof typeof LEAVE_TYPE_ID;

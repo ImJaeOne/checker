@@ -33,9 +33,12 @@ import type {
   LeaveRequestFormValue,
 } from '@/types/DTO/leaveRequests.dto';
 import {
-  HALF_DAY_TYPE_LABELS,
+  LEAVE_TYPE_ID,
+  LEAVE_DAYS,
   HALF_DAY_TYPES,
-} from '@/constants/leaveRequests.constant';
+  HALF_DAY_TYPE_LABELS,
+} from '@/constants/leave.constant';
+import { calculateWeekdays, isValidDateRange } from '@/utils/date.util';
 import { useNavigate } from 'react-router-dom';
 import SITE_MAP from '@/constants/siteMap.constant';
 import { postLeaveRequests } from '@/apis/leaveRequests.api';
@@ -178,7 +181,7 @@ const LeaveRequestForm = () => {
                     >
                       {field.value
                         ? new Date(field.value).toLocaleDateString()
-                        : 'Select date'}
+                        : '시작 일자 선택'}
                       <ChevronDownIcon />
                     </Button>
                   </PopoverTrigger>
@@ -217,7 +220,7 @@ const LeaveRequestForm = () => {
                       >
                         {field.value
                           ? new Date(field.value).toLocaleDateString()
-                          : 'Select date'}
+                          : '종료 일자 선택'}
                         <ChevronDownIcon />
                       </Button>
                     </PopoverTrigger>
@@ -269,13 +272,13 @@ export default LeaveRequestForm;
 /**
  * 휴가 신청 기간의 총 일수를 계산합니다 (주말 제외)
  *
- * @param {number} leave_type_id - 휴가 타입 ID (2: 반차, 기타: 연차)
- * @param {Date} start_date - 휴가 시작일
- * @param {Date} end_date - 휴가 종료일
- * @returns {number} 계산된 총 휴가 일수
+ * @param leave_type_id - 휴가 타입 ID
+ * @param start_date - 휴가 시작일
+ * @param end_date - 휴가 종료일
+ * @returns 계산된 총 휴가 일수
  *
  * @description
- * - 반차(leave_type_id === 2)인 경우: 0.5일 반환
+ * - 반차인 경우: 0.5일 반환
  * - 연차인 경우: 시작일부터 종료일까지 평일(월~금)만 카운트
  * - 주말(토요일, 일요일)은 휴가 일수에서 제외
  * - 시작일이 종료일보다 늦은 경우: 0 반환
@@ -285,28 +288,15 @@ const calcTotalDays = (
   leave_type_id: number,
   start_date: Date,
   end_date?: Date,
-) => {
-  if (leave_type_id === 2) return 0.5;
-
-  if (start_date && end_date) {
-    const start = new Date(start_date);
-    const end = new Date(end_date);
-
-    if (start > end) return 0;
-
-    let totalDays = 0;
-    const current = new Date(start);
-
-    while (current <= end) {
-      const dayOfWeek = current.getDay();
-      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-        totalDays++;
-      }
-      current.setDate(current.getDate() + 1);
-    }
-
-    return totalDays;
+): number => {
+  if (leave_type_id === LEAVE_TYPE_ID.HALF_DAY) {
+    return LEAVE_DAYS.HALF_DAY;
   }
 
-  return 1;
+  if (start_date && end_date) {
+    if (!isValidDateRange(start_date, end_date)) return 0;
+    return calculateWeekdays(start_date, end_date);
+  }
+
+  return LEAVE_DAYS.ANNUAL;
 };
