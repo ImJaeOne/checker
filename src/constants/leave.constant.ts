@@ -14,6 +14,13 @@ export const LEAVE_STATUSES = [
   'cancelled',
 ] as const;
 
+export const LEAVE_STATUSES_LABELS = {
+  pending: '대기',
+  approved: '승인',
+  rejected: '반려',
+  cancelled: '취소',
+};
+
 export const LEAVE_TYPE_ID = {
   ANNUAL: 1,
   HALF_DAY: 2,
