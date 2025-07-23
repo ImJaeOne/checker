@@ -1,4 +1,3 @@
-// hooks/useGetAttendanceQuery.ts
 import { getAttendance } from '@/apis/attendances.api';
 import { QUERY_KEY } from '@/constants/queryKey.constant';
 import { useQuery } from '@tanstack/react-query';

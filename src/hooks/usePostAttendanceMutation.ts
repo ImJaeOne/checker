@@ -1,4 +1,3 @@
-// hooks/usePostAttendanceMutation.ts
 import { postAttendance } from '@/apis/attendances.api';
 import { QUERY_KEY } from '@/constants/queryKey.constant';
 import type { UserId } from '@/types/DTO/user.dto';
