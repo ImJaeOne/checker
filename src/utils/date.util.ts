@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 /**
  * 두 날짜 사이의 평일(월~금) 개수를 계산합니다.
  *
@@ -43,4 +45,8 @@ export const calculateWeekdays = (startDate: Date, endDate: Date): number => {
  */
 export const isValidDateRange = (startDate: Date, endDate: Date): boolean => {
   return startDate && endDate && new Date(startDate) <= new Date(endDate);
+};
+
+export const formatDateToYMD = (date: Date): string => {
+  return format(date, 'yyyy-MM-dd');
 };
