@@ -47,6 +47,15 @@ export const isValidDateRange = (startDate: Date, endDate: Date): boolean => {
   return startDate && endDate && new Date(startDate) <= new Date(endDate);
 };
 
+/**
+ * Date 객체를 'yyyy-MM-dd' 형식의 문자열로 변환합니다.
+ *
+ * @param date - 변환할 Date 객체
+ * @returns 'yyyy-MM-dd' 형식의 날짜 문자열
+ *
+ * @example
+ * formatDateToYMD(new Date('2025-07-19')); // '2025-07-19'
+ */
 export const formatDateToYMD = (date: Date): string => {
   return format(date, 'yyyy-MM-dd');
 };
