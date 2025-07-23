@@ -1,9 +1,12 @@
-import { ATTENDANCE_TYPES } from '@/constants/attendance.constant';
+import {
+  ATTENDANCE_TYPES,
+  type PostAttendance,
+} from '@/constants/attendance.constant';
 import { DB } from '@/constants/db.constant';
 import type { AttendanceState } from '@/types/DTO/attendances.dto';
 import type { UserId } from '@/types/DTO/user.dto';
 import { parseAttendanceStateFromDB } from '@/utils/createAttendanceState.utis';
-import { formatDateToYMD } from '@/utils/date.util';
+import { formatDateToYMD, formatTimeToHMS } from '@/utils/date.util';
 import { supabase } from '@/utils/supabase';
 
 /**
@@ -44,12 +47,10 @@ export const getAttendance = async (id: UserId): Promise<AttendanceState> => {
  * @returns 'check-in' | 'check-out' (출근/퇴근 처리 결과)
  * @throws {Error}
  */
-export const postAttendance = async (
-  id: UserId,
-): Promise<'check-in' | 'check-out'> => {
+export const postAttendance = async (id: UserId): Promise<PostAttendance> => {
   const now = new Date();
-  const time = now.toTimeString().slice(0, 8);
-  const date = now.toISOString().slice(0, 10);
+  const date = formatDateToYMD(now);
+  const time = formatTimeToHMS(now);
 
   // 사용자 출근 시간 조회
   const { data: userData, error: userError } = await supabase
@@ -89,7 +90,7 @@ export const postAttendance = async (
     if (updateError) {
       throw new Error('퇴근 기록 실패');
     }
-    return 'check-out';
+    return 'checked-out';
   } else {
     // 출근 기록 없음 → 출근 처리
     const isLate = time > scheduledStartTime;
@@ -108,6 +109,6 @@ export const postAttendance = async (
     if (insertError) {
       throw new Error('출근 기록 실패');
     }
-    return 'check-in';
+    return 'checked-in';
   }
 };
