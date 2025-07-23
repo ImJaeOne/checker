@@ -79,7 +79,7 @@ export const getLeaveRequests = async (): Promise<LeaveApprovals> => {
  *
  * @throws {Error} 데이터베이스 업데이트 실패 시 Supabase 에러를 던집니다
  */
-export const updateLeaveRequestStatus = async (
+export const patchLeaveRequestStatus = async (
   requestId: number | number[],
   status: 'approved' | 'rejected',
   approverId?: string,

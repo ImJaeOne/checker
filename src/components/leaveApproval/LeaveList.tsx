@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import type { LeaveRequestDTO } from '@/types/DTO/leaveRequests.dto';
-import { updateLeaveRequestStatus } from '@/apis/leaveRequests.api';
+import { patchLeaveRequestStatus } from '@/apis/leaveRequests.api';
 import { useUserStore } from '@/store/user.store';
 
 const LeaveList = () => {
@@ -41,7 +41,7 @@ const LeaveList = () => {
     requestId: number | number[],
     approverId: string,
   ): Promise<LeaveRequestDTO | LeaveRequestDTO[]> => {
-    return updateLeaveRequestStatus(requestId, 'approved', approverId);
+    return patchLeaveRequestStatus(requestId, 'approved', approverId);
   };
 
   // TODO 반려 누르면 모달창 열려서 반려 사유 작성하기..
@@ -49,7 +49,7 @@ const LeaveList = () => {
     requestId: number | number[],
     approverId: string,
   ): Promise<LeaveRequestDTO | LeaveRequestDTO[]> => {
-    return updateLeaveRequestStatus(requestId, 'rejected', approverId);
+    return patchLeaveRequestStatus(requestId, 'rejected', approverId);
   };
 
   if (isLoading) return <div>로딩중</div>;
