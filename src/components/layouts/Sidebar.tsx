@@ -74,7 +74,7 @@ const AppSidebar = () => {
     isError,
   } = useGetAttendanceQuery(user.id);
 
-  const { mutate: handleAttendance, isPending: isMutating } =
+  const { mutate: attendanceMutation, isPending: isMutating } =
     usePostAttendanceMutation();
 
   const onSignOut = async () => {
@@ -97,7 +97,7 @@ const AppSidebar = () => {
       !isMutating &&
       attendanceState?.status === ATTENDANCE_STATUS.NOT_CHECKED
     ) {
-      handleAttendance(user.id);
+      attendanceMutation(user.id);
     }
   };
 
@@ -106,7 +106,7 @@ const AppSidebar = () => {
       !isMutating &&
       attendanceState?.status === ATTENDANCE_STATUS.CHECKED_IN
     ) {
-      handleAttendance(user.id);
+      attendanceMutation(user.id);
     }
   };
 
@@ -115,8 +115,8 @@ const AppSidebar = () => {
   const isCheckOutDisabled =
     isMutating || attendanceState?.status !== ATTENDANCE_STATUS.CHECKED_IN;
 
-  const checkInTime = attendanceState?.checkInTime;
-  const checkOutTime = attendanceState?.checkOutTime;
+  const checkInTime = attendanceState?.check_in_time;
+  const checkOutTime = attendanceState?.check_out_time;
 
   return (
     <Sidebar>

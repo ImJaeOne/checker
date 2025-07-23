@@ -1,10 +1,9 @@
-import {
-  ATTENDANCE_STATUS,
-  ATTENDANCE_TYPES,
-} from '@/constants/attendance.constant';
+import { ATTENDANCE_TYPES } from '@/constants/attendance.constant';
 import { DB } from '@/constants/db.constant';
 import type { AttendanceState } from '@/types/DTO/attendances.dto';
 import type { UserId } from '@/types/DTO/user.dto';
+import { parseAttendanceStateFromDB } from '@/utils/createAttendanceState.utis';
+import { formatDateToYMD } from '@/utils/date.util';
 import { supabase } from '@/utils/supabase';
 
 /**
@@ -19,10 +18,9 @@ import { supabase } from '@/utils/supabase';
  * @throws {Error}
  */
 export const getAttendance = async (id: UserId): Promise<AttendanceState> => {
-  const now = new Date();
-  const today = now.toISOString().slice(0, 10);
+  const today = formatDateToYMD(new Date());
 
-  const { data, error } = await supabase
+  const { data: attendanceState, error } = await supabase
     .from(DB.ATTENDANCES)
     .select('*')
     .eq('user_id', id)
@@ -33,39 +31,7 @@ export const getAttendance = async (id: UserId): Promise<AttendanceState> => {
     throw new Error('출근 여부 확인 실패');
   }
 
-  if (!data) {
-    return {
-      status: ATTENDANCE_STATUS.NOT_CHECKED,
-      checkInTime: undefined,
-      checkOutTime: undefined,
-      date: today,
-    };
-  }
-
-  if (data.check_in_time && !data.check_out_time) {
-    return {
-      status: ATTENDANCE_STATUS.CHECKED_IN,
-      checkInTime: data.check_in_time,
-      checkOutTime: undefined,
-      date: data.date,
-    };
-  }
-
-  if (data.check_in_time && data.check_out_time) {
-    return {
-      status: ATTENDANCE_STATUS.CHECKED_OUT,
-      checkInTime: data.check_in_time,
-      checkOutTime: data.check_out_time,
-      date: data.date,
-    };
-  }
-
-  return {
-    status: ATTENDANCE_STATUS.NOT_CHECKED,
-    checkInTime: undefined,
-    checkOutTime: undefined,
-    date: today,
-  };
+  return parseAttendanceStateFromDB(attendanceState);
 };
 
 /**
