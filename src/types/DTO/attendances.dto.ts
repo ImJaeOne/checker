@@ -28,7 +28,7 @@ export type AttendanceStatus =
 
 export type AttendanceState = {
   status: AttendanceStatus;
-  checkInTime?: string;
-  checkOutTime?: string;
+  check_in_time?: string;
+  check_out_time?: string;
   date?: string;
 };
