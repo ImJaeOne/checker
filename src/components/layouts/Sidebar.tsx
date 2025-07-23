@@ -28,6 +28,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
+import { useGetAttendanceQuery } from '@/hooks/useAttendanceQuery';
+import { usePostAttendanceMutation } from '@/hooks/usePostAttendanceMutation';
+import { ATTENDANCE_STATUS } from '@/constants/attendance.constant';
 
 const NavItems = [
   {
@@ -65,6 +68,15 @@ const AppSidebar = () => {
   const navigate = useNavigate();
   const isNotAdmin = user.role !== 'admin';
 
+  const {
+    data: attendanceState,
+    isPending,
+    isError,
+  } = useGetAttendanceQuery(user.id);
+
+  const { mutate: handleAttendance, isPending: isMutating } =
+    usePostAttendanceMutation();
+
   const onSignOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -79,6 +91,32 @@ const AppSidebar = () => {
       console.error(error);
     }
   };
+
+  const onClickCheckIn = () => {
+    if (
+      !isMutating &&
+      attendanceState?.status === ATTENDANCE_STATUS.NOT_CHECKED
+    ) {
+      handleAttendance(user.id);
+    }
+  };
+
+  const onClickCheckOut = () => {
+    if (
+      !isMutating &&
+      attendanceState?.status === ATTENDANCE_STATUS.CHECKED_IN
+    ) {
+      handleAttendance(user.id);
+    }
+  };
+
+  const isCheckInDisabled =
+    isMutating || attendanceState?.status !== ATTENDANCE_STATUS.NOT_CHECKED;
+  const isCheckOutDisabled =
+    isMutating || attendanceState?.status !== ATTENDANCE_STATUS.CHECKED_IN;
+
+  const checkInTime = attendanceState?.checkInTime;
+  const checkOutTime = attendanceState?.checkOutTime;
 
   return (
     <Sidebar>
@@ -139,8 +177,16 @@ const AppSidebar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <p>{user.name}</p>
-                  <ChevronUp className="ml-auto" />
+                  {isPending ? (
+                    '로딩중...'
+                  ) : isError ? (
+                    '사용자 정보 불러올 수 없음'
+                  ) : (
+                    <>
+                      <span>{user.name}</span>
+                      <ChevronUp className="ml-auto" />
+                    </>
+                  )}
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -149,6 +195,39 @@ const AppSidebar = () => {
               >
                 <DropdownMenuItem onClick={onSignOut}>
                   <span>로그아웃</span>
+                </DropdownMenuItem>
+                {/* 출근/퇴근 버튼 분리 및 시간 표시 */}
+                <DropdownMenuItem className="flex flex-col gap-2 px-2 py-1">
+                  <button
+                    className={`w-full flex items-center gap-2 pr-3 py-2 rounded ${
+                      isCheckInDisabled && 'text-gray-400'
+                    }`}
+                    onClick={onClickCheckIn}
+                    disabled={isCheckInDisabled}
+                  >
+                    출근
+                    {checkInTime && (
+                      <span className="ml-2 text-xs text-gray-700">
+                        {checkInTime}
+                      </span>
+                    )}
+                  </button>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex flex-col gap-2 px-2 py-1">
+                  <button
+                    className={`w-full flex items-center gap-2 pr-3 py-2 rounded ${
+                      isCheckOutDisabled && 'text-gray-400'
+                    }`}
+                    onClick={onClickCheckOut}
+                    disabled={isCheckOutDisabled}
+                  >
+                    퇴근
+                    {checkOutTime && (
+                      <span className="ml-2 text-xs text-gray-700">
+                        {checkOutTime}
+                      </span>
+                    )}
+                  </button>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
