@@ -13,8 +13,8 @@ export type LeaveRequestDTO = {
   total_days: number;
   reason: string;
   status: Leave_status;
-  approved_by: string | null;
-  approved_at: string | null;
+  processed_by: string | null;
+  processed_at: string | null;
   rejection_reason: string | null;
   created_at: string;
   updated_at: string;
