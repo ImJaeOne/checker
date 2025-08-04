@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ChevronUp } from 'lucide-react';
 import { supabase } from '@/utils/supabase';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUserStore } from '@/store/user.store';
 import {
   Collapsible,
@@ -146,9 +146,9 @@ const AppSidebar = () => {
                             return (
                               <SidebarMenuSubItem key={child.title}>
                                 <SidebarMenuSubButton asChild>
-                                  <a href={child.url}>
+                                  <Link to={child.url}>
                                     <span>{child.title}</span>
-                                  </a>
+                                  </Link>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
                             );
@@ -160,9 +160,9 @@ const AppSidebar = () => {
                 ) : (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <a href={item.url}>
+                      <Link to={item.url}>
                         <span>{item.title}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
