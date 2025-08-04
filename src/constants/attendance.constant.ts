@@ -7,12 +7,12 @@ export const ATTENDANCE_TYPES = {
 } as const;
 
 export const ATTENDANCE_STATUS = {
-  NOT_CHECKED: 'not-checked',
-  CHECKED_IN: 'checked-in',
-  CHECKED_OUT: 'checked-out',
+  NOT_CHECKED: 'not_checked',
+  CHECKED_IN: 'checked_in',
+  CHECKED_OUT: 'checked_out',
 } as const;
 
 export type PostAttendance = Exclude<
   (typeof ATTENDANCE_STATUS)[keyof typeof ATTENDANCE_STATUS],
-  'not-checked'
+  'not_checked'
 >;

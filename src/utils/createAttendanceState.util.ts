@@ -1,7 +1,5 @@
-// src/apis/attendances.api.ts
-
 import { ATTENDANCE_STATUS } from '@/constants/attendance.constant';
-import { formatDateToYMD } from './date.util';
+import { formatDateToYMD } from '@/utils/date.util';
 import type {
   AttendanceState,
   AttendanceStatus,
