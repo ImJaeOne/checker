@@ -61,3 +61,21 @@ export const formatDateToYMD = (date: Date): string => {
 export const formatTimeToHMS = (date: Date): string => {
   return format(date, 'HH:mm:ss');
 };
+
+/**
+ * Date 객체를 'yyyy-MM-dd HH:mm:ss' 형식의 문자열로 변환합니다.
+ */
+export const formatDateTimeToYMDHMS = (date: Date): string => {
+  return format(date, 'yyyy-MM-dd HH:mm:ss');
+};
+
+/**
+ * ISO 문자열을 Date 객체로 변환한 후 'yyyy-MM-dd HH:mm:ss' 형식으로 포맷합니다.
+ * 타임스탬프 문자열을 직접 받아서 처리하는 헬퍼 함수입니다.
+ */
+export const formatISOStringToYMDHMS = (isoString: string): string => {
+  if (!isoString) return '-';
+
+  const date = new Date(isoString);
+  return formatDateTimeToYMDHMS(date);
+};
