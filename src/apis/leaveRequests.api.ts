@@ -91,8 +91,8 @@ export const patchLeaveRequestStatus = async (
     .from('leave_requests')
     .update({
       status,
-      approved_by: approverId,
-      approved_at: new Date().toISOString(),
+      processed_by: approverId,
+      processed_at: new Date().toISOString(),
       rejection_reason: rejectReason,
     })
     .in('id', ids)
