@@ -4,4 +4,5 @@ export const QUERY_KEY = {
   DEPARTMENTS: 'departments',
   POSITIONS: 'positions',
   ATTENDANCE: 'attendance',
+  LEAVE_REQUESTS: 'leave_requests',
 };
