@@ -1,4 +1,5 @@
 import {
+  ATTENDANCE_STATUS,
   ATTENDANCE_TYPES,
   type PostAttendance,
 } from '@/constants/attendance.constant';
@@ -8,6 +9,13 @@ import type { UserId } from '@/types/DTO/user.dto';
 import { parseAttendanceStateFromDB } from '@/utils/createAttendanceState.utis';
 import { formatDateToYMD, formatTimeToHMS } from '@/utils/date.util';
 import { supabase } from '@/utils/supabase';
+import {
+  getUserWorkStartTime,
+  getTodayAttendanceRecord,
+  isLateAttendance,
+  createAttendanceRecord,
+  updateCheckOutTime,
+} from '@/services/attendances.service';
 
 /**
  * 오늘 날짜 기준으로 해당 사용자의 출근/퇴근 상태를 조회합니다.
@@ -52,63 +60,35 @@ export const postAttendance = async (id: UserId): Promise<PostAttendance> => {
   const date = formatDateToYMD(now);
   const time = formatTimeToHMS(now);
 
-  // 사용자 출근 시간 조회
-  const { data: userData, error: userError } = await supabase
-    .from(DB.USERS)
-    .select('work_start_time')
-    .eq('id', id)
-    .maybeSingle();
+  // 사용자 출근 기준 시간 조회
+  const scheduledStartTime = await getUserWorkStartTime(id);
 
-  if (userError || !userData) {
-    throw new Error('사용자 정보를 가져올 수 없습니다.');
-  }
+  // 오늘 출근 기록 조회
+  const existingRecord = await getTodayAttendanceRecord(id, date);
 
-  const scheduledStartTime = userData.work_start_time;
-
-  // 해당 날짜에 이미 출근한 기록이 있는지 확인
-  const { data: existingRecord, error: fetchError } = await supabase
-    .from(DB.ATTENDANCES)
-    .select('*')
-    .eq('user_id', id)
-    .eq('date', date)
-    .maybeSingle();
-
-  if (fetchError) {
-    throw new Error('출근 기록 조회 실패');
-  }
-
-  if (existingRecord) {
+  if (existingRecord && existingRecord.id) {
     // 이미 출근 기록 있음 → 퇴근 처리
-    const { error: updateError } = await supabase
-      .from(DB.ATTENDANCES)
-      .update({
-        check_out_time: time,
-        updated_at: now.toISOString(),
-      })
-      .eq('id', existingRecord.id);
-
+    const { error: updateError } = await updateCheckOutTime(
+      existingRecord.id,
+      time,
+    );
     if (updateError) {
       throw new Error('퇴근 기록 실패');
     }
-    return 'checked-out';
+    return ATTENDANCE_STATUS.CHECKED_OUT;
   } else {
     // 출근 기록 없음 → 출근 처리
-    const isLate = time > scheduledStartTime;
-
+    const isLate = isLateAttendance(time, scheduledStartTime);
     const status = isLate ? ATTENDANCE_TYPES.LATE : ATTENDANCE_TYPES.PRESENT;
-
-    const { error: insertError } = await supabase.from(DB.ATTENDANCES).insert({
-      user_id: id,
+    const { error: insertError } = await createAttendanceRecord(
+      id,
       date,
-      check_in_time: time,
+      time,
       status,
-      created_at: now.toISOString(),
-      updated_at: now.toISOString(),
-    });
-
+    );
     if (insertError) {
       throw new Error('출근 기록 실패');
     }
-    return 'checked-in';
+    return ATTENDANCE_STATUS.CHECKED_IN;
   }
 };
