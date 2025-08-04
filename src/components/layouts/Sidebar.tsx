@@ -196,38 +196,29 @@ const AppSidebar = () => {
                 <DropdownMenuItem onClick={onSignOut}>
                   <span>로그아웃</span>
                 </DropdownMenuItem>
-                {/* 출근/퇴근 버튼 분리 및 시간 표시 */}
-                <DropdownMenuItem className="flex flex-col gap-2 px-2 py-1">
-                  <button
-                    className={`w-full flex items-center gap-2 pr-3 py-2 rounded ${
-                      isCheckInDisabled && 'text-gray-400'
-                    }`}
-                    onClick={onClickCheckIn}
-                    disabled={isCheckInDisabled}
-                  >
-                    출근
-                    {checkInTime && (
-                      <span className="ml-2 text-xs text-gray-700">
-                        {checkInTime}
-                      </span>
-                    )}
-                  </button>
+                <DropdownMenuItem
+                  onClick={onClickCheckIn}
+                  disabled={isCheckInDisabled}
+                  className={isCheckInDisabled ? 'text-gray-400' : ''}
+                >
+                  <span>출근</span>
+                  {checkInTime && (
+                    <span className="ml-2 text-xs text-gray-700">
+                      {checkInTime}
+                    </span>
+                  )}
                 </DropdownMenuItem>
-                <DropdownMenuItem className="flex flex-col gap-2 px-2 py-1">
-                  <button
-                    className={`w-full flex items-center gap-2 pr-3 py-2 rounded ${
-                      isCheckOutDisabled && 'text-gray-400'
-                    }`}
-                    onClick={onClickCheckOut}
-                    disabled={isCheckOutDisabled}
-                  >
-                    퇴근
-                    {checkOutTime && (
-                      <span className="ml-2 text-xs text-gray-700">
-                        {checkOutTime}
-                      </span>
-                    )}
-                  </button>
+                <DropdownMenuItem
+                  onClick={onClickCheckOut}
+                  disabled={isCheckOutDisabled}
+                  className={isCheckOutDisabled ? 'text-gray-400' : ''}
+                >
+                  <span>퇴근</span>
+                  {checkOutTime && (
+                    <span className="ml-2 text-xs text-gray-700">
+                      {checkOutTime}
+                    </span>
+                  )}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
