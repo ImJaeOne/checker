@@ -14,12 +14,13 @@ import TableErrorMessage from '@/components/leaveApproval/tableErrorMessage';
 
 const LeaveList = () => {
   const user = useUserStore((state) => state.user);
-  const { data: leaveList, isLoading, isError } = useGetLeaveRequestsQuery();
+  const { data: leaveList, isPending, isError } = useGetLeaveRequestsQuery();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const [rejectReason, setRejectReason] = useState('');
 
-  const approveLeaveRequestMutation = useApproveLeaveRequest();
-  const rejectLeaveRequestMutation = useRejectLeaveRequest();
+  const { mutate: approveLeaveRequest, isPending: isApprovePending } =
+    useApproveLeaveRequest();
+  const { mutate: rejectLeaveRequest, isPending: isRejectPending } =
+    useRejectLeaveRequest();
 
   const handleCheckboxChange = (id: number) => {
     setSelectedIds((prev) =>
@@ -41,7 +42,7 @@ const LeaveList = () => {
       return;
     }
 
-    approveLeaveRequestMutation.mutate(
+    approveLeaveRequest(
       {
         requestId: selectedIds,
         approverId: user.id,
@@ -59,13 +60,11 @@ const LeaveList = () => {
     );
   };
 
-  const handleRejectLeaveRequest = () => {
-    if (!rejectReason.trim()) {
-      alert('반려 사유를 입력해주세요.');
-      return;
-    }
-
-    rejectLeaveRequestMutation.mutate(
+  const handleRejectLeaveRequest = (
+    rejectReason: string,
+    onSuccess: () => void,
+  ) => {
+    rejectLeaveRequest(
       {
         requestId: selectedIds,
         approverId: user.id,
@@ -75,7 +74,7 @@ const LeaveList = () => {
         onSuccess: () => {
           alert('반려 완료');
           setSelectedIds([]);
-          setRejectReason('');
+          onSuccess();
         },
         onError: (error) => {
           console.error('반려 실패:', error);
@@ -87,10 +86,10 @@ const LeaveList = () => {
 
   return (
     <>
-      {isLoading && <TableLoadingMessage />}
+      {isPending && <TableLoadingMessage />}
       {isError && <TableErrorMessage />}
 
-      {!isLoading && !isError && (
+      {!isPending && !isError && (
         <Table>
           <LeaveTableHeader
             leaveList={leaveList}
@@ -108,8 +107,8 @@ const LeaveList = () => {
         selectedIds={selectedIds}
         onApprove={handleApproveLeaveRequest}
         onReject={handleRejectLeaveRequest}
-        isApproving={approveLeaveRequestMutation.isPending}
-        isRejecting={rejectLeaveRequestMutation.isPending}
+        isApproving={isApprovePending}
+        isRejecting={isRejectPending}
       />
     </>
   );
