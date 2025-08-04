@@ -1,4 +1,4 @@
-import LeaveList from '@/components/leaveApproval/LeaveList';
+import LeaveTable from '@/components/leaveApproval/LeaveTable';
 
 const LeaveApprovalPage = () => {
   return (
@@ -9,7 +9,7 @@ const LeaveApprovalPage = () => {
       </section>
       <section>
         <h3 className="sr-only">연차 신청 목록</h3>
-        <LeaveList />
+        <LeaveTable />
       </section>
     </section>
   );

@@ -3,6 +3,7 @@ import type {
   LeaveRequestDTO,
   LeaveRequestFormValue,
 } from '@/types/DTO/leaveRequests.dto';
+import { formatDateToYMD } from '@/utils/date.util';
 import { supabase } from '@/utils/supabase';
 
 /**
@@ -22,9 +23,16 @@ import { supabase } from '@/utils/supabase';
 export const postLeaveRequests = async (
   data: LeaveRequestFormValue,
 ): Promise<LeaveRequestDTO> => {
+  const processedData = {
+    ...data,
+    start_date: formatDateToYMD(data.start_date),
+    end_date: data.end_date ? formatDateToYMD(data.end_date) : data.end_date,
+    processed_by: null,
+  };
+
   const { data: leaveRequestData, error } = await supabase
     .from('leave_requests')
-    .insert(data)
+    .insert(processedData)
     .select()
     .single();
 
@@ -56,7 +64,7 @@ export const getLeaveRequests = async (): Promise<LeaveApprovals> => {
         departments(name), 
         positions(name)
       ),
-      approver:users!leave_requests_approved_by_fkey(
+      approver:users!leave_requests_processed_by_fkey(
         id, 
         name
       )
@@ -83,6 +91,7 @@ export const patchLeaveRequestStatus = async (
   requestId: number | number[],
   status: 'approved' | 'rejected',
   approverId?: string,
+  rejectReason?: string,
 ): Promise<LeaveRequestDTO[]> => {
   const ids = Array.isArray(requestId) ? requestId : [requestId];
 
@@ -90,8 +99,9 @@ export const patchLeaveRequestStatus = async (
     .from('leave_requests')
     .update({
       status,
-      approved_by: approverId,
-      approved_at: new Date().toISOString(),
+      processed_by: approverId,
+      processed_at: new Date().toISOString(),
+      rejection_reason: rejectReason,
     })
     .in('id', ids)
     .select();
