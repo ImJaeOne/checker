@@ -27,6 +27,7 @@ export const postLeaveRequests = async (
     ...data,
     start_date: formatDateToYMD(data.start_date),
     end_date: data.end_date ? formatDateToYMD(data.end_date) : data.end_date,
+    processed_by: null,
   };
 
   const { data: leaveRequestData, error } = await supabase
