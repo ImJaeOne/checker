@@ -6,7 +6,7 @@ import {
 import { DB } from '@/constants/db.constant';
 import type { AttendanceState } from '@/types/DTO/attendances.dto';
 import type { UserId } from '@/types/DTO/user.dto';
-import { parseAttendanceStateFromDB } from '@/utils/createAttendanceState.utis';
+import { parseAttendanceStateFromDB } from '@/utils/createAttendanceState.util';
 import { formatDateToYMD, formatTimeToHMS } from '@/utils/date.util';
 import { supabase } from '@/utils/supabase';
 import {

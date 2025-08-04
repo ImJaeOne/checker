@@ -26,7 +26,7 @@ export const createAttendanceState = (
  * @returns 변환된 AttendanceState 객체
  */
 export const parseAttendanceStateFromDB = (
-  data: AttendanceState,
+  data: AttendanceState | null,
 ): AttendanceState => {
   const today = formatDateToYMD(new Date());
 
