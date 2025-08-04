@@ -5,6 +5,7 @@ import {
   LEAVE_STATUSES_LABELS,
 } from '@/constants/leave.constant';
 import type { LeaveApprovals } from '@/types/DTO/leaveRequests.dto';
+import { formatISOStringToYMDHMS } from '@/utils/date.util';
 
 type LeaveTableBodyProps = {
   leaveList: LeaveApprovals | undefined;
@@ -43,14 +44,18 @@ const LeaveTableBody = ({
           <TableCell>
             {leave.half_day_type
               ? HALF_DAY_TYPE_LABELS[leave.half_day_type]
-              : '-'}
+              : ''}
           </TableCell>
           <TableCell>{leave.total_days}</TableCell>
           <TableCell>{leave.reason}</TableCell>
           <TableCell>{LEAVE_STATUSES_LABELS[leave.status]}</TableCell>
-          <TableCell>{leave.requested_at}</TableCell>
+          <TableCell>{formatISOStringToYMDHMS(leave.requested_at)}</TableCell>
           <TableCell>{leave.approver?.name}</TableCell>
-          <TableCell>{leave.processed_at}</TableCell>
+          <TableCell>
+            {leave.processed_at
+              ? formatISOStringToYMDHMS(leave.processed_at)
+              : ''}
+          </TableCell>
           <TableCell>{leave.rejection_reason}</TableCell>
         </TableRow>
       ))}
