@@ -22,9 +22,7 @@ const LeaveTableBody = ({
       {leaveList?.map((leave, idx) => (
         <TableRow
           key={leave.id}
-          className={
-            selectedIds.includes(leave.id) ? 'bg-gray-50' : 'bg-gray-0'
-          }
+          className={selectedIds.includes(leave.id) ? 'bg-gray-50' : ''}
         >
           <TableCell>
             <Checkbox
