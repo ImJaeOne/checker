@@ -56,7 +56,7 @@ export const getLeaveRequests = async (): Promise<LeaveApprovals> => {
         departments(name), 
         positions(name)
       ),
-      approver:users!leave_requests_approved_by_fkey(
+      approver:users!leave_requests_processed_by_fkey(
         id, 
         name
       )
@@ -83,6 +83,7 @@ export const patchLeaveRequestStatus = async (
   requestId: number | number[],
   status: 'approved' | 'rejected',
   approverId?: string,
+  rejectReason?: string,
 ): Promise<LeaveRequestDTO[]> => {
   const ids = Array.isArray(requestId) ? requestId : [requestId];
 
@@ -92,6 +93,7 @@ export const patchLeaveRequestStatus = async (
       status,
       approved_by: approverId,
       approved_at: new Date().toISOString(),
+      rejection_reason: rejectReason,
     })
     .in('id', ids)
     .select();
